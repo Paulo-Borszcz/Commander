@@ -1,5 +1,4 @@
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 export function TicketsDetails() {
@@ -7,7 +6,7 @@ export function TicketsDetails() {
             <DialogContent>
                   <DialogHeader>
                         <DialogTitle className="text-2xl font-bold">Chamado 198 907 | HelpDesk - TI</DialogTitle>
-                        <DialogDescription className="text-sm my-2">Detalhes do Chamado:</DialogDescription>
+                        <DialogDescription className="text-sm my-2">Dados Formulário:</DialogDescription>
                         <Table>
                               <TableBody>
                                     
