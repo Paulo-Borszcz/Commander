@@ -5,7 +5,7 @@ export function TicketsMoved() {
       return(
             <Card>
                   <CardHeader className="flex flex-row space-y-0 items-center justify-between pb-2">
-                        <CardTitle className="text-2xl font-bold tracking-tight flex gap-2">Chamados Transferidos <span className="text-muted-foreground">(Mês)</span></CardTitle>
+                        <CardTitle className="text-xl font-bold tracking-tight flex gap-2">Chamados Transferidos <span className="text-muted-foreground">(Mês)</span></CardTitle>
                         <ArrowLeftRight className="h-4 w-4" />
                   </CardHeader>
                   <CardContent className="space-y-1">

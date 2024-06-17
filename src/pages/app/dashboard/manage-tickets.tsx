@@ -8,7 +8,7 @@ export function ManageTickets() {
       return (
             <Card>
                   <CardHeader className="flex flex-row space-y-0 items-center justify-between pb-2">
-                        <CardTitle className="text-2xl font-bold tracking-tight">Gerenciamento</CardTitle>
+                        <CardTitle className="text-xl font-bold tracking-tight">Gerenciamento</CardTitle>
                         <Settings2 className="h-4 w-4" />
                   </CardHeader>
                   <CardContent className="space-y-3">

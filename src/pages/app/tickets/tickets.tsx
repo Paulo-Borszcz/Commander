@@ -8,6 +8,9 @@ export const handleRedirect = (url: string) => (_event: React.MouseEvent<HTMLBut
       window.open(url);
 };
 
+
+
+
 export function Tickets() {
       return (
             <>
