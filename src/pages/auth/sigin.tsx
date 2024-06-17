@@ -6,7 +6,10 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
+import { useMutation } from "@tanstack/react-query"
+import { signIn } from "@/api/sign-in"
+import { useNavigate } from "react-router-dom"
+import Cookies from 'js-cookie'
 
 const signInForm = z.object({
       username: z.string(),
@@ -14,24 +17,78 @@ const signInForm = z.object({
 })
 type SignInForm = z.infer<typeof signInForm>
 
+type ErrorKey = "invalid credentials" | "user not found" | "password is required" | "username is required" | "default";
+
+interface ErrorMessages {
+      [key: string]: {
+            title: string;
+            description: string;
+            action?: {
+                  label: string;
+                  onClick: () => void;
+            };
+      };
+}
+
+const errorMessages: ErrorMessages = {
+      "invalid credentials": {
+            title: "Senha Incorreta!",
+            description: "Insira novamente sua Senha",
+      },
+      "user not found": {
+            title: "Usuário Não Encontrado!",
+            description: "Por favor, verifique suas credenciais e tente novamente.",
+      },
+      "password is required": {
+            title: "Senha não Inserida!",
+            description: "Por favor, insira sua Senha!",
+      },
+      "username is required": {
+            title: "Usuário não Inserido!",
+            description: "Por favor, insira seu Usuário!",
+      },
+      "default": {
+            title: "Houve Um Erro!",
+            description: "Contate a TI",
+            action: {
+                  label: "Abrir um Chamado",
+                  onClick: () => window.open('https://nexus.lojasmm.com.br/marketplace/formcreator/front/formdisplay.php?id=30')
+            }
+      }
+};
+
+
 
 export function SignIn() {
+      const navigate = useNavigate()
+
       const { register, handleSubmit, formState: { isSubmitting } } = useForm<SignInForm>();
 
-      async function handleSignIn(data: SignInForm) {
-            console.log(data)
-            try {
-                  await new Promise(resolve => setTimeout(resolve, 2000))
-                  //toast.success("Você foi Autenticado com Sucesso!")
-                  throw new Error()
+      const { mutateAsync: authenticate } = useMutation({
+            mutationFn: signIn,
 
-            } catch (error) {
-                  toast.error("Houve Um Erro!",{ description: "Contate a TI",
-                        action: {
-                              label: "Abrir um Chamado",
-                              onClick: () => window.open('https://nexus.lojasmm.com.br/marketplace/formcreator/front/formdisplay.php?id=30')
-                        }
-                  })
+      })
+
+      async function handleSignIn(data: SignInForm) {
+            try {
+                  const result = await authenticate({ username: data.username, password: data.password })
+                  Cookies.set('authToken', result.token, { expires: 1, sameSite: 'Lax'})
+                  Cookies.set('userName', result.userInfo.username, { expires: 1, sameSite: 'Lax'})
+                  Cookies.set('userRealname', result.userInfo.realname, { expires: 1, sameSite: 'Lax'})
+                  Cookies.set('userType', result.userInfo.userType, { expires: 1, sameSite: 'Lax'})
+                  navigate("/")
+
+                  toast.success("Você foi Autenticado com Sucesso!")
+
+            }
+            catch (error: any) {
+                  const errorMessageKey = error.response?.data?.msg as ErrorKey;
+                  const errorMessage = errorMessages[errorMessageKey] || errorMessages["default"];
+
+                  toast.warning(errorMessage.title, {
+                        description: errorMessage.description,
+                        action: errorMessage.action
+                  });
             }
       }
 

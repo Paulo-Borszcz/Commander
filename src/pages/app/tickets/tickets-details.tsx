@@ -1,5 +1,7 @@
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { handleRedirect } from "./tickets";
+import { Button } from "@/components/ui/button";
 
 export function TicketsDetails() {
       return (
@@ -9,7 +11,7 @@ export function TicketsDetails() {
                         <DialogDescription className="text-sm my-2">Dados Formulário:</DialogDescription>
                         <Table>
                               <TableBody>
-                                    
+
                                     <TableRow>
                                           <TableCell className="text-muted-foreground">IP: </TableCell>
                                           <TableCell className="flex justify-end">
@@ -39,8 +41,12 @@ export function TicketsDetails() {
                                     </TableRow>
 
                               </TableBody>
+
                         </Table>
                   </DialogHeader>
+                  <DialogFooter>
+                        <Button className="font-semibold" variant={"secondary"} onClick={handleRedirect('https://nexus.lojasmm.com.br/front/ticket.form.php?id=198907')}>Abrir em Nexus</Button>
+                  </DialogFooter>
             </DialogContent>
       )
 }
